@@ -148,7 +148,15 @@ public class UserInterface {
     }
 
     private void processGetByVehicleTypeRequest() {
-        System.out.println("----See Models----");
+        System.out.println("----See Types----");
+        scanner.nextLine();
+
+        System.out.print("Enter type: ");
+        String type = scanner.nextLine();
+
+        ArrayList<Vehicle> filteredVehicles = dealership.vehiclesByType(type);
+
+        displayVehicles(filteredVehicles);
     }
 
     private void processGetAllVehiclesRequest() {
@@ -190,6 +198,8 @@ public class UserInterface {
         Vehicle newVehicle = new Vehicle(vin, year, make, model, type, color, mileage, price);
         dealership.addVehicle(newVehicle);
 
+        DealershipFileManager.saveDealership(dealership);
+
         System.out.println("Vehicle added successfully!");
     }
 
@@ -203,6 +213,7 @@ public class UserInterface {
         boolean removed = dealership.removeVehicleByVin(vin);
 
         if (removed) {
+            DealershipFileManager.saveDealership(dealership);
             System.out.println("Vehicle removed successfully!");
         } else {
             System.out.println("Vehicle with VIN: " + vin + " not found!");
